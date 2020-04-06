@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Api.Models
 {
     public class Country
     {
-        public int Id { get; }
+        [Key]
+        public int Id { get; private set; }
 
         public string Name { get; set; }
     }

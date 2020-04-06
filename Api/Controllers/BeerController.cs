@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Api.Data.Contexts;
 using Api.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Api.Controllers
 {
@@ -14,18 +13,21 @@ namespace Api.Controllers
     public class BeerController : ControllerBase
     {
         private readonly ILogger<BeerController> _logger;
+        private readonly SqlContext _db;
 
-        public BeerController(ILogger<BeerController> logger)
+        public BeerController(ILogger<BeerController> logger, SqlContext db)
         {
-            _logger = logger;            
+            _logger = logger;
+            _db = db;
         }
         
         [HttpGet]
-        public Beer Get()
+        public IActionResult Get()
         {
             var rng = new Random();
             _logger.LogInformation("User requested a random beer.");
-            return Beers[rng.Next(Beers.Count)];
+            _logger.LogInformation($"Database contains {_db.Beers.Count()} beers.");
+            return Ok(Beers[rng.Next(Beers.Count)]);
         }
 
         private readonly List<Beer> Beers = new List<Beer>
