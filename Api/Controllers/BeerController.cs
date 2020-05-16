@@ -1,8 +1,10 @@
 ﻿using Api.Data.Contexts;
+using Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
@@ -27,6 +29,15 @@ namespace Api.Controllers
             _logger.LogInformation("User requested a random beer.");
             int idx = rng.Next(_db.Beers.Count());
             return Ok(_db.Beers.OrderBy(b => Guid.NewGuid()).FirstOrDefault());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Beer>> AddBeer(Beer beer)
+        {
+            _db.Beers.Add(beer);
+            await _db.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(AddBeer), new { id = beer.Id }, beer);
         }
     }
 }
