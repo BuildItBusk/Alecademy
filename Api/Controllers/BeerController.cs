@@ -1,9 +1,7 @@
 ﻿using Api.Data.Contexts;
-using Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Api.Controllers
@@ -19,6 +17,7 @@ namespace Api.Controllers
         {
             _logger = logger;
             _db = db;
+            _logger.LogInformation($"Database contains {_db.Beers.Count()} beers.");
         }
         
         [HttpGet]
@@ -26,14 +25,8 @@ namespace Api.Controllers
         {
             var rng = new Random();
             _logger.LogInformation("User requested a random beer.");
-            _logger.LogInformation($"Database contains {_db.Beers.Count()} beers.");
-            return Ok(Beers[rng.Next(Beers.Count)]);
+            int idx = rng.Next(_db.Beers.Count());
+            return Ok(_db.Beers.OrderBy(b => Guid.NewGuid()).FirstOrDefault());
         }
-
-        private readonly List<Beer> Beers = new List<Beer>
-        {
-            new Beer { Name = "Tuborg Classic", AlcoholVol = 5.6m, Origin = new Country { Name = "Denmark" }},
-            new Beer { Name = "Grimbergen Blonde", AlcoholVol = 6.7m, Origin = new Country { Name = "France" }}
-        };
     }
 }

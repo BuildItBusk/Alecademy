@@ -1,4 +1,5 @@
-﻿using Api.Models;
+﻿using Api.Data.Configurations;
+using Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Data.Contexts
@@ -11,5 +12,11 @@ namespace Api.Data.Contexts
         public DbSet<Beer> Beers { get; set; }
 
         public DbSet<Country> Countries { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new CountryConfiguration());
+            builder.ApplyConfiguration(new BeerConfiguration());
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Api.Migrations
 {
-    public partial class Initialmigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace Api.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -25,10 +25,10 @@ namespace Api.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false),
-                    AlcoholVol = table.Column<decimal>(nullable: false),
-                    OriginId = table.Column<int>(nullable: true),
-                    ImageUri = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    AlcoholVol = table.Column<decimal>(type: "decimal(5,2)", nullable: false),
+                    OriginId = table.Column<int>(nullable: false),
+                    ImageUri = table.Column<string>(maxLength: 4000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -38,8 +38,28 @@ namespace Api.Migrations
                         column: x => x.OriginId,
                         principalTable: "Countries",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Countries",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { 1, "Denmark" });
+
+            migrationBuilder.InsertData(
+                table: "Countries",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { 2, "France" });
+
+            migrationBuilder.InsertData(
+                table: "Beers",
+                columns: new[] { "Id", "AlcoholVol", "ImageUri", "Name", "OriginId" },
+                values: new object[] { 1, 4.6m, null, "Grøn Tuborg", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Beers",
+                columns: new[] { "Id", "AlcoholVol", "ImageUri", "Name", "OriginId" },
+                values: new object[] { 2, 6.4m, null, "Grimbergen", 2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Beers_OriginId",
