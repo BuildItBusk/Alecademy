@@ -12,10 +12,8 @@ namespace Api.Data.Configurations
             builder.Property(b => b.ImageUri).HasMaxLength(4000).IsRequired(false);
             builder.Property(b => b.AlcoholVol).HasColumnType("decimal(5,2)").IsRequired(true);
 
-            builder.HasData(
-                new Beer { Id = 1, Name = "Grøn Tuborg", AlcoholVol = 4.6m, OriginId = 1 },
-                new Beer { Id = 2, Name = "Grimbergen", AlcoholVol = 6.4m, OriginId = 2 });
-
+            builder.HasIndex(b => b.Name).IsUnique(true);
+            builder.HasIndex(b => b.OriginId).IsUnique(false);
         }
     }
 }
