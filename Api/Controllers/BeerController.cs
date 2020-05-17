@@ -34,6 +34,12 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Beer>> AddBeer(Beer beer)
         {
+            if (beer.Origin != null)
+                return BadRequest("Use 'OriginId' to refer to an existing origin, when adding beers.");
+
+            if (_db.Beers.Where(b => b.Name == beer.Name).Any())
+                return BadRequest($"A beer with the name '{beer.Name}' already exists.");
+
             _db.Beers.Add(beer);
             await _db.SaveChangesAsync();
 
