@@ -1,6 +1,7 @@
 ﻿using Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.Data.Configurations
 {
@@ -13,7 +14,9 @@ namespace Api.Data.Configurations
             builder.Property(b => b.AlcoholVol).HasColumnType("decimal(5,2)").IsRequired(true);
 
             builder.HasIndex(b => b.Name).IsUnique(true);
-            builder.HasIndex(b => b.OriginId).IsUnique(false);
+            builder.HasIndex(b => b.BreweryId).IsUnique(false);
+
+            builder.HasOne(b => b.Brewery).WithMany().OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

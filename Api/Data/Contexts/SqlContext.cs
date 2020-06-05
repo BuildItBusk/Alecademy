@@ -11,11 +11,11 @@ namespace Api.Data.Contexts
 
         public DbSet<Beer> Beers { get; set; }
 
-        public DbSet<Country> Countries { get; set; }
+        public DbSet<Brewery> Breweries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new CountryConfiguration());
+            builder.ApplyConfiguration(new BreweryConfiguration());
             builder.ApplyConfiguration(new BeerConfiguration());
         }
     }

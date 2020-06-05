@@ -10,9 +10,9 @@ namespace Api.Models
 
         public decimal AlcoholVol { get; set; }
 
-        public int OriginId { get; set; }
+        public int BreweryId { get; set; }
 
-        public Country Origin { get; set; }
+        public Brewery Brewery { get; set; }
 
         public Uri ImageUri { get; set; }
     }
