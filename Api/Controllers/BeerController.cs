@@ -23,12 +23,13 @@ namespace Api.Controllers
         }
         
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(string name)
         {
-            var rng = new Random();
-            _logger.LogInformation("User requested a random beer.");
-            int idx = rng.Next(_db.Beers.Count());
-            return Ok(_db.Beers.OrderBy(b => Guid.NewGuid()).FirstOrDefault());
+            _logger.LogInformation($"Searching for beer name '{name}'.");
+            var beer = _db.Beers.Where(b => b.Name.Contains(name) || b.Brewery.Name.Contains(name));
+
+            if (beer.Any()) return Ok(beer);
+            return NotFound($"No beer or brewery named '{name}' exists in the database.");
         }
 
         [HttpPost]
